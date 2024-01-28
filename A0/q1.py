@@ -17,8 +17,9 @@ def calculate_distances(x, y):
     # TODO: Debug
     diff = x - y
     squared = diff ** 2
-    summed = np.sum(squared)
+    summed = np.sum(squared, axis=1)
     distances = np.sqrt(summed)
+    distances = distances.reshape(-1,1)
     return distances
 
 def combine_squares(square_1, square_2, square_3, square_4):
@@ -48,9 +49,9 @@ def combine_squares(square_1, square_2, square_3, square_4):
             A tensor with shape (2n, 2n)
     """
     # TODO: Debug
-    top = torch.cat((square_1, square_2))
-    bottom = torch.cat((square_3, square_4))
-    combined_square = torch.cat((top, bottom))
+    top = torch.cat((square_1, square_2),dim=1)
+    bottom = torch.cat((square_3, square_4),dim=1)
+    combined_square = torch.cat((top, bottom),dim=0)
     return combined_square
 
 def video_to_filmstrip(video_frames):
@@ -70,4 +71,5 @@ def video_to_filmstrip(video_frames):
             A tensor with shape (h, w * n_frames, c)
     """
     # TODO: Implement
-    raise NotImplementedError
+    filmstrip = np.concatenate(video_frames, axis=1)
+    filmstrip = torch.from_numpy(filmstrip)
