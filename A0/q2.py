@@ -63,12 +63,9 @@ def train(x, y, model, loss_fn, optimizer, checkpoint_path, num_epochs=1000):
     best_loss = float('inf')
 
     for epoch in range(num_epochs):
-        # Forward pass
-        outputs = model(x)
-        loss = loss_fn(outputs, y)
+        predictions = model(x)
+        loss = loss_fn(predictions, y)
 
-        # Backward pass and optimization
-        optimizer.zero_grad()
         loss.backward()
         optimizer.step()
 
@@ -76,6 +73,7 @@ def train(x, y, model, loss_fn, optimizer, checkpoint_path, num_epochs=1000):
         if loss.item() < best_loss:
             best_loss = loss.item()
             torch.save(model.state_dict(), checkpoint_path)
+
 
 def load_model_checkpoint(checkpoint_path):
     """Load a model checkpoint from disk.
